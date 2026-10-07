@@ -785,3 +785,6 @@ a.hk:hover .ok, a.hky:hover .ok { transform: translateX(3px); }
 .randevu .iletisim-liste span { font-size: 19px; }
 .randevu-sag .rv-adim { margin-top: 12px; }
 @media (max-width: 767px) { .randevu .iletisim-liste { grid-template-columns: minmax(0, 1fr); } }
+
+/* Koyu bantlardaki beyaz "Randevu al" düğmesi: üzerine gelince kırmızı */
+.dgm-beyaz:hover { background: var(--kirmizi); color: #fff; }
