@@ -234,8 +234,10 @@
       requestAnimationFrame(kare);
     }
     boyut();
-    new ResizeObserver(boyut).observe(kutu);
-    if (az) { zemin(); ciz({ bas: 0, x: W * 0.55 }); return; }
+    // Mobil denetim: hareket azaltmada boyut değişince tuval temizleniyor, durağan çizgi kayboluyordu; yeniden çizilir
+    function durgun() { zemin(); ciz({ bas: 0, x: W * 0.55 }); }
+    new ResizeObserver(function () { boyut(); if (az) durgun(); }).observe(kutu);
+    if (az) { durgun(); return; }
     serit.addEventListener('mousemove', function (e) { imlec = e.clientX - kutu.getBoundingClientRect().left; });
     serit.addEventListener('mouseleave', function () { imlec = null; });
     new IntersectionObserver(function (g) {
