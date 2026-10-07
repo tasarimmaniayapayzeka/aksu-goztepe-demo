@@ -17,7 +17,7 @@
     var a = e.target.closest('[data-demo-yok]');
     if (!a) return;
     e.preventDefault();
-    not('Bu sayfa önizlemede yok. Her yönde ana sayfa, Kardiyoloji ve bir hekim sayfası hazırlandı.');
+    not('Bu sayfa önizlemede henüz yok.');
   });
 
   // Mobil menü
