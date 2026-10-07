@@ -1,0 +1,25 @@
+/* Yalnız önizleme: yön değiştirme çubuğu ve kısa not. Sitenin tasarımına ait değildir. */
+[hidden] { display: none !important; }
+.atla { position: absolute; left: -9999px; top: 8px; z-index: 100; padding: 10px 14px; background: #111; color: #fff; font: 500 14px/1 system-ui, sans-serif; }
+.atla:focus { left: 8px; }
+.onz {
+  position: fixed; left: 16px; bottom: 16px; z-index: 90;
+  display: flex; align-items: center; gap: 2px; padding: 4px;
+  background: rgba(24, 24, 22, .92); border-radius: 999px;
+  font: 500 12px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.onz a { color: #d9d9d4; text-decoration: none; padding: 8px 11px; border-radius: 999px; white-space: nowrap; }
+.onz a:hover { color: #fff; background: rgba(255, 255, 255, .1); }
+.onz a[aria-current="page"] { background: #fff; color: #1b1b19; }
+.onz .onz-ana { color: #fff; }
+.onz-not {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 95;
+  max-width: min(92vw, 460px); padding: 12px 16px; border-radius: 10px;
+  background: #1b1b19; color: #fff; font: 400 14px/1.45 system-ui, sans-serif; text-align: center;
+}
+@media (max-width: 767px) {
+  .onz { left: 8px; bottom: 76px; }
+  .onz a { padding: 7px 9px; }
+  .onz-not { bottom: 128px; }
+}
+@media print { .onz, .onz-not { display: none; } }
