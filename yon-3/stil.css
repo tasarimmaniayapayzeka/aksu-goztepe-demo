@@ -1301,3 +1301,171 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
   .paket { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; margin-bottom: 32px; }
   .paket > .pk-bag { justify-self: start; align-self: start; }
 }
+
+/* =====================================================================
+   MOBİL DENETİM (7 Ekim 2026): 320, 360, 390, 414 ve 768 genişlikte gözle ve taramayla bulunan kaymalar.
+   Tasarım aynı kalır; kurallar yalnız dar ekranda ya da dokunmatikte devreye girer.
+   ===================================================================== */
+
+/* Mobil denetim: başlıktaki arama paneli kapalıyken de ölçülüyordu (tarama "kutusundan taşan yazı" diyordu); kapalıyken hiç çizilmez */
+.ara:not([open]) > .ara-panel { display: none; }
+
+/* Mobil denetim: açılır menü başlığın kırmızı alt çizgisinin üstüne biniyor, çizgi menü açıkken kayboluyordu (arama paneli gibi altına alındı) */
+@media (max-width: 960px) {
+  .menu { margin-top: 3px; }
+}
+
+/* Mobil denetim: hekim vitrini ok düğmesi, check-up halkaları ve etiket kutuları dokunulduktan sonra
+   üzerine gelme rengini koruyordu (dokunmatikte :hover takılı kalır). Dokunmatikte yalnız basılı anda renk değişir. */
+@media (hover: none) {
+  .hv-ok:hover:not(:disabled) { z-index: auto; background: #fff; border-color: var(--komur); color: var(--komur); }
+  .hv-ok:active:not(:disabled) { z-index: 1; background: var(--kirmizi); border-color: var(--kirmizi); color: #fff; }
+  .etiket li:hover { background: none; border-color: var(--komur); color: inherit; }
+  .cip li:not(.cip-arti):hover { background: var(--zemin-2); color: inherit; }
+  .etiket li:hover::before, .cip li:not(.cip-arti):hover::before { background: var(--kirmizi); animation: none; }
+  .etiket li:hover::after, .cip li:not(.cip-arti):hover::after { transform: scaleX(0); }
+  .tikli.tik-izgara li:hover, .metin .blk-liste li:hover { background: var(--zemin-2); border-left-color: var(--kirmizi); color: inherit; }
+  .tikli.tik-izgara li:hover .ik, .metin .blk-liste li:hover .ik { color: var(--kirmizi); }
+  .metin .blk-dl div:hover { background: none; }
+  .metin .blk-dl div:hover dt { color: inherit; }
+  .metin .blk-dl div:hover dd { color: var(--metin-2); }
+  .metin .blk-dl div:hover a { color: var(--kirmizi-koyu); }
+  .halka:hover::before { transform: scaleX(0); }
+  .halka.secili:hover::before { transform: scaleX(1); }
+}
+
+/* Mobil denetim: tablet (768-960) */
+@media (min-width: 768px) and (max-width: 960px) {
+  /* hızlı işlem kutularında başlık ve alt yazı farklı satır sayısına inince kutular arası hiza kayıyordu */
+  .giris-kutular .kutu { padding: 18px; }
+  .giris-kutular .kutu strong { font-size: 18px; min-height: 2.4em; }
+  .giris-kutular .kutu small { font-size: 14px; line-height: 1.35; min-height: 2.7em; }
+  /* hasta rehberi kutuları üç sütunda sıkışıyordu (metin 130 px'e iniyordu) */
+  .hr-izgara { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) and (max-width: 1080px) {
+  /* altbilgide "Adres" sütunu tek başına alt satıra düşüyordu: logonun yanına alındı */
+  .alt-kimlik { grid-column: span 2; }
+  .alt-ust > .alt-sut { order: 2; }
+  .alt-ust > .alt-sut:last-child { order: 1; }
+}
+@media (max-width: 1080px) {
+  /* hasta rehberi kutusunda başlık tek satırken alt yazı aşağı itiliyordu (ızgara satırları yüksekliğe yayılıyordu) */
+  .hr-izgara a { align-content: start; }
+}
+
+/* Mobil denetim: telefon (767 ve altı) */
+@media (max-width: 767px) {
+  /* üst satır: yazı 14 px, acil hattı bağlantısı 44 px dokunma alanı */
+  .ust { font-size: 14px; }
+  .ust-ic { min-height: 44px; }
+  .ust-acil { align-self: stretch; }
+
+  /* ana sayfa arama kutusu: uzun örnek yazı kesik görünmek yerine üç noktayla biter; sonuç listesi kutunun koyu çerçevesiyle aynı hizada */
+  .ga-kutu input, .ara-form input { text-overflow: ellipsis; }
+  .giris-sonuc { left: -3px; right: -3px; border-width: 0 3px 3px; }
+  .ara-sonuc small { font-size: 14px; }
+  .sik-bas { font-size: 14px; }
+  .sik a { min-height: 44px; font-size: 14px; }
+  .giris-olgu span { font-size: 14px; line-height: 1.25; }
+  .giris-olgu li { padding-left: 10px; }
+  .giris-olgu li:first-child { padding-left: 0; }
+
+  /* hızlı işlem ve 404 kutuları: alt yazı bir ya da iki satır olunca yan yana kutuların başlıkları kayıyordu */
+  .kutu small { font-size: 14px; line-height: 1.35; min-height: 2.7em; }
+
+  /* ana sayfa sihirbazı: iki satıra inen başlıkta satır aralığı çok açıktı, iç boşluk diğer kutularla eşitlendi */
+  .sihirbaz { padding: 22px 18px; }
+  .sihirbaz h2 { line-height: 1.2; }
+  .sh-not { font-size: 14px; }
+
+  /* ana sayfa randevu formu: gönder düğmesi diğer formlardaki gibi tam genişlik */
+  .randevu-kutu button[type="submit"] { justify-self: stretch; }
+
+  /* ulaşım haritası: kutu kısa olduğundan iğne üst kenara yapışıyordu; kutu yükseltildi */
+  .ulasim-harita { min-height: 300px; }
+  /* iletişim sayfası haritası sık sorulanların hemen altına yapışıyordu */
+  .icerik .harita { margin-top: 32px; }
+
+  /* tıbbi birimler: "Dahili birimler" ile altındaki "Destek ve rehabilitasyon" aynı gri olduğundan tek blok görünüyordu */
+  .grup-kutular .gk:last-child.k-gri { background: #fff; box-shadow: inset 0 0 0 1px var(--cizgi); }
+  .grup-kutular .gk:last-child.k-gri:hover { background: var(--zemin-2); }
+
+  /* hekimler: kart alt yazıları 13,5 px idi */
+  .hk-kart-ic > span, .hk-kart em { font-size: 14px; }
+
+  /* hekim profili: üç sekme sığmayınca üçüncüsü ("İlgi alanları") ekran kenarında kesiliyordu; sekmeler eşit genişlikte */
+  .sekme-liste { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); overflow: visible; }
+  .sekme-liste button { padding: 12px 8px; white-space: normal; line-height: 1.25; text-align: center; }
+
+  /* sağlık rehberi ve künye: küçük yazılar 14 px */
+  .rh-birim, .rh-satir small, .rh-kutular small, .yazar-kunye dt, .kunye-kutu dt { font-size: 14px; }
+
+  /* formlar: yardım ve hata yazıları 14 px */
+  .icerik .yardim, .icerik .hata, .hata, .istege-bagli { font-size: 14px; }
+
+  /* araçlar: seçenekler iki satıra inince satır aralığı daraltıldı (44 px dokunma alanı korunur);
+     sonuç düğmeleri her araçta tam genişlik; bölge seçimi kutusunun altında fazladan 28 px boşluk kalıyordu */
+  .secenekler label { padding: 11px 13px; line-height: 1.35; }
+  .arac-sonuc .dgm { width: 100%; }
+  .arac-kutu .bolge-izgara:has(+ [hidden]) { margin-bottom: 0; }
+  .aj-bas .metin-dgm, .aj-liste .metin-dgm { min-width: 44px; min-height: 44px; }
+
+  /* tetkik kartı arka yüzü ve check-up sayı kutuları: küçük etiketler 14 px; sayı kutusunda etiket bir ya da iki satır olunca rakamlar kayıyordu */
+  .tk-arka dt { font-size: 14px; }
+  .sayi-kutu span { font-size: 14px; min-height: 2.7em; }
+  .pk-bilgi dt, .mx-kart dt, .mx-kart summary small { font-size: 14px; }
+
+  /* check-up halkaları: kategori adı ("Görüntüleme") renk karesinden ayrılıp alt satıra düşüyordu; kare yazının soluna sabitlendi, halka küçültüldü */
+  .halka { gap: 14px; padding: 18px 14px; }
+  .halka svg { width: 96px; }
+  .halka-tablo th { position: relative; padding-left: 20px; }
+  .halka-tablo .renk { position: absolute; left: 0; top: 12px; margin: 0; }
+  .halka-tablo td { padding-left: 6px; }
+
+  /* içerik tabloları: yana kaydırmalı tablo ikinci sütunu kesik gösteriyordu; dar ekranda satırlar kart olarak alt alta dizilir */
+  .blk-tablo.blk-yigin { overflow: visible; }
+  .blk-yigin table { min-width: 0; }
+  .blk-yigin thead { display: none; }
+  .blk-yigin table, .blk-yigin tbody, .blk-yigin tr, .blk-yigin th, .blk-yigin td { display: block; width: 100%; }
+  .blk-tablo.blk-yigin tbody tr { margin-bottom: 10px; border: 1px solid var(--cizgi); background: #fff; }
+  .blk-tablo.blk-yigin tbody th { padding: 12px 14px; background: var(--zemin-2); }
+  .blk-tablo.blk-yigin td { padding: 10px 14px; border-top: 1px solid var(--cizgi); }
+  .blk-yigin td[data-b]::before { content: attr(data-b); display: block; margin-bottom: 2px; font: 600 14px/1.4 var(--baslik); color: var(--komur); }
+
+  /* tek başına duran metin bağlantıları: görünüm aynı, dokunma alanı 44 px */
+  .metin-bag, .pk-bag, .sh-tel, .serit-tel { position: relative; }
+  .metin-bag::after, .pk-bag::after, .sh-tel::after, .serit-tel::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
+  .yan-iletisim a { padding: 11px 0; }
+
+  /* altbilgi: "Sağlık araçları" sütunu tek başına yarım genişlikte kalıyordu; tam genişliğe alındı, listesi iki sütun.
+     Bağlantılar arası 8 px'ten dokunmaya uygun aralığa çıktı; iki satıra inen bağlantıda satır aralığı daraltıldı. */
+  .alt-ust .alt-sut:nth-last-child(2) { grid-column: 1 / -1; }
+  .alt-ust .alt-sut:nth-last-child(2) ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 36px; align-items: start; }
+  .alt-sut li { margin: 0; }
+  .alt-sut a { display: inline-block; padding: 10px 0; line-height: 1.4; }
+  .alt-acil span { font-size: 14px; }
+  .alt-not p { font-size: 14px; }
+  .alt-yasal a { display: inline-block; padding: 6px 0; }
+}
+
+/* Mobil denetim: ulaşım haritasında iğnenin konumu. Google gömülü haritası 400 px'ten dar çerçevede
+   büyük yer kartı yerine yalnız küçük bir "Haritalar'da aç" düğmesi gösterir; 150 px yukarı kaydırma burada gereksizdi
+   ve iğneyi üst kenara itiyordu. Dar telefonlarda kaydırma düğme kadar; 432-559 arasında yer kartı daha uzun olduğundan biraz fazla. */
+@media (max-width: 431px) {
+  .ulasim-harita .harita { top: -56px; height: calc(100% + 56px); }
+}
+@media (min-width: 432px) and (max-width: 559px) {
+  .ulasim-harita { min-height: 400px; }
+  .ulasim-harita .harita { top: -172px; height: calc(100% + 172px); }
+}
+
+/* Mobil denetim: 359 px ve altı. Check-up halkasında tablo halkanın yanına sığmıyordu; halka üstte, tablo altta.
+   Hızlı işlem ve 404 kutularında başlık ya da alt yazı bir satır fazla kırılınca yan yana kutuların yazıları kayıyordu. */
+@media (max-width: 359px) {
+  .giris-kutular .kutu strong { min-height: 2.4em; }
+  .kutular-4 .kutu small { min-height: 4.05em; }
+  .halka { flex-direction: column; align-items: stretch; }
+  .halka svg { align-self: center; width: 120px; }
+  .halka figcaption { margin-top: 14px; }
+}
