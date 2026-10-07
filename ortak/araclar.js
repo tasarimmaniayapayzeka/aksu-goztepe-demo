@@ -138,6 +138,15 @@
         if (!form.elements.tarih.value) { form.elements.tarih.focus(); return; }
         var alanlar = {};
         t.alanlar.forEach(function (a) { var g = form.elements[a.ad]; alanlar[a.etiket] = g ? String(g.value).trim() : ''; });
+        // Bütün alanlar boşsa boş kayıt eklenmez
+        if (!Object.keys(alanlar).some(function (x) { return alanlar[x]; })) {
+          var uyari = k.querySelector('[data-aj-uyari]');
+          if (!uyari) { uyari = yap('p', 'hata', 'Kaydetmek için en az bir alanı doldurun.'); uyari.setAttribute('data-aj-uyari', ''); uyari.setAttribute('role', 'alert'); alanKutu.parentNode.insertBefore(uyari, alanKutu.nextSibling); }
+          uyari.hidden = false;
+          var ilk = alanKutu.querySelector('input, textarea'); if (ilk) ilk.focus();
+          return;
+        }
+        var u0 = k.querySelector('[data-aj-uyari]'); if (u0) u0.hidden = true;
         var l = oku(); l.push({ id: Date.now(), tur: t.id, turAd: t.ad, tarih: form.elements.tarih.value, alanlar: alanlar });
         kaydet(l);
         alanKutu.querySelectorAll('input, textarea').forEach(function (g) { g.value = ''; });
