@@ -773,3 +773,15 @@ a.hk:hover .ok, a.hky:hover .ok { transform: translateX(3px); }
 .koyu-liste { align-content: start; }
 
 @media (max-width: 767px) { .rv-ekip { flex-wrap: wrap; gap: 12px; } .rv-ekip p { flex: 1 1 100%; } }
+
+/* EKG monitörü: iki sütunun altında boydan boya şerit (denge) */
+.koyu-ic { align-items: start; }
+.koyu-yazi { display: block; }
+.monitor-genis { flex: none; height: 200px; min-height: 0; margin-top: 56px; }
+@media (max-width: 767px) { .monitor-genis { height: 150px; margin-top: 40px; } }
+
+/* Randevu bölümü dengesi: kartlar yan yana, adımlar formun altında */
+.randevu .iletisim-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.randevu .iletisim-liste span { font-size: 19px; }
+.randevu-sag .rv-adim { margin-top: 12px; }
+@media (max-width: 767px) { .randevu .iletisim-liste { grid-template-columns: minmax(0, 1fr); } }
