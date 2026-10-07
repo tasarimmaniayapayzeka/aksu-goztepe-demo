@@ -1097,3 +1097,76 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat; }
 .arama-kutu input::-webkit-search-cancel-button:hover { background: var(--komur); }
+
+/* Mobil denetim: telefon ve dar ekran düzeltmeleri (7 Ekim 2026). Masaüstü görünümü değişmez. */
+
+/* Mobil denetim: hekimler sayfasındaki ad aramasında da tarayıcının mavi temizle (×) düğmesi çıkıyordu; arama kutusundaki sade × kullanılır */
+.alan input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; margin: 0 -4px 0 6px; cursor: pointer; background: var(--metin-2);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M18 6L6 18M6 6l12 12'/%3E%3C/svg%3E") center / contain no-repeat; }
+.nw { white-space: nowrap; }
+
+/* Mobil denetim: ana sayfa sağlık rehberi tek sütuna inince büyük yazı ile yan yazılar arasında 64 px boşluk ve çizgisiz bir geçiş kalıyordu (ikinci yan yazıda çizgi var, birincide yok) */
+@media (max-width: 960px) {
+  .rh-izgara { gap: 36px; }
+  .rh-yan article:first-child { padding-top: 26px; border-top: 1px solid var(--cizgi); }
+}
+
+/* Mobil denetim: dokunmatikte ok düğmesi dokunulduktan sonra kırmızı (hover) kalıyordu */
+@media (hover: none) {
+  .hk-ok:hover:not(:disabled) { background: #fff; border-color: var(--cizgi-2); color: var(--komur); }
+}
+
+@media (max-width: 767px) {
+  /* Mobil denetim: telefonda .kap kuralı .duzen'in alt boşluğunu sıfırlıyordu; sağ kart (randevu, WhatsApp) altbilgiye ya da "İlgili yazılar"a yapışıyordu */
+  .duzen { padding-bottom: 64px; }
+
+  /* Mobil denetim: yönlendirme bandındaki düğme kabı içerik genişliğine kilitliydi; 320 px'te düğmeler sağdan 27 px taşıyordu, 360'ta 2 px. Kap satırı doldurur, düğmeler sığar */
+  .yonlendir-dgm, .yonlendir-sinyal .yonlendir-dgm { flex: 1 1 100%; min-width: 0; }
+
+  /* Mobil denetim: ana sayfa hekim vitrini haplarında ilk hap sayfa kenarından 32 px içeride başlıyordu (diğer her şey 16 px); şerit kenara taşar, haplar 16 px'ten başlar */
+  .hk-grup { margin-left: -16px; margin-right: -16px; }
+
+  /* Mobil denetim: arama sonuçlarında sağdaki tür etiketi ("Kadın Hastalıkları ve Doğum") başlığı dar bir sütuna sıkıştırıyordu; sığmayınca etiket alt satıra iner */
+  .arama-sonuc a { flex-wrap: wrap; column-gap: 12px; row-gap: 0; }
+  .arama-sonuc small { white-space: normal; }
+
+  /* Mobil denetim: 44 px altında kalan dokunma alanları. Üst şeritteki acil ve telefon bağlantıları 22 px yüksekliğindeydi; şerit 44 px olur, bağlantılar şeridi doldurur */
+  .ust-ic { min-height: 44px; align-items: stretch; }
+  /* Haplar ve sekmeler 44 px'e çıkar */
+  .suz button, .paket-sekme button, .secenekler label, .sikayet-liste button, .hkv-dgm { min-height: 44px; }
+  .capa a { min-height: 44px; padding-top: 9px; padding-bottom: 9px; }
+  /* Görünümü değişmesin diye metin bağlantılarında dokunma alanı dolgu ve eksi kenar boşluğuyla büyütülür */
+  .acil-ic a { padding-top: 9px; padding-bottom: 9px; margin-top: -9px; margin-bottom: -9px; }
+  .metin-bag { padding-top: 10px; padding-bottom: 10px; margin-top: -10px; margin-bottom: -10px; }
+  .metin-dgm { padding-top: 13.5px; padding-bottom: 13.5px; margin-top: -7.5px; margin-bottom: -7.5px; }
+  .randevu-yazi .buyuk-tel { padding: 2px 0; margin: 4px 0 12px; }
+  .yan-kart .buyuk-tel { padding: 5.5px 0; margin: -5.5px 0 2.5px; }
+  /* "Sık arananlar" hapları 34 px görünür, dokunma alanı 44 px (satıra 5 px iç boşluk; açılır sonuç listesi ve altındaki bilgiler yerinde kalır) */
+  .arama-ornek { margin-top: 9px; padding-top: 5px; padding-bottom: 5px; }
+  .arama-ornek a { position: relative; }
+  .arama-ornek a::after { content: ""; position: absolute; left: 0; right: 0; top: -5px; bottom: -5px; }
+  .arama-sonuc { top: calc(100% - 47px); }
+  .giris-guven { margin-top: 25px; }
+
+  /* Mobil denetim: 14 px altında kalan gövde metinleri (form yardım ve hata iletileri, altbilgi notu) */
+  .okuma .yardim, .okuma .hata, .hata, .alt-not { font-size: 14px; }
+
+  /* Mobil denetim: ana sayfa randevu formunda "Gönder" küçük hap olarak solda kalıyordu; diğer formlardaki gibi tam genişlik */
+  .randevu-form button[type="submit"] { justify-self: stretch; }
+
+  /* Mobil denetim: hızlı işlem kartında iki satıra inen başlıkta ("Tahlil sonuçları", 320 px) satır arası çok açıktı */
+  .hizli strong { line-height: 1.3; }
+}
+
+/* Mobil: rehber tabloları yana kaymak yerine satır satır blok (çizgi düzeni, serif satır başlığı; parca.js data-b) */
+@media (max-width: 600px) {
+  .blk-tablo { overflow: visible; }
+  .blk-tablo thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .blk-tablo tbody, .blk-tablo tr, .blk-tablo th, .blk-tablo td { display: block; }
+  .blk-tablo tr { padding: 14px 0; border-top: 2px solid var(--komur); }
+  .blk-tablo tbody tr + tr { border-top-width: 1px; border-top-color: var(--cizgi-2); }
+  .blk-tablo tbody th { font: 500 18px/1.35 var(--serif); padding: 0 0 8px; border-bottom: 0; }
+  .blk-tablo td { display: grid; grid-template-columns: minmax(96px, 38%) minmax(0, 1fr); gap: 12px; padding: 6px 0; border-bottom: 0; }
+  .blk-tablo td::before { content: attr(data-b); font-size: 14px; font-weight: 600; color: var(--metin-2); }
+}
