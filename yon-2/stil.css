@@ -1190,3 +1190,12 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
 @keyframes mon-etiket { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .monitor.hz-secili { border-color: rgba(255, 114, 118, .45); box-shadow: 0 0 0 1px rgba(255, 114, 118, .2), 0 20px 50px -30px rgba(225, 30, 36, .7); }
 .monitor { transition: border-color .4s ease, box-shadow .4s ease; }
+
+/* Monitör etiketi: nabız çizgisi üstüne binmesin diye buzlu koyu kutu (mobil hata düzeltmesi) */
+.monitor-etiket { padding: 9px 14px; background: rgba(28, 28, 26, .84); border: 1px solid rgba(255, 255, 255, .1); border-radius: var(--r); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+@media (max-width: 767px) {
+  .monitor-etiket { left: 10px; top: 10px; padding: 6px 10px; }
+  .monitor-etiket b { font-size: 13px; }
+  .monitor-etiket span { font-size: 11px; }
+  .hk-cip { -webkit-mask: linear-gradient(90deg, #000 78%, transparent); mask: linear-gradient(90deg, #000 78%, transparent); }
+}
