@@ -6,7 +6,7 @@
   var NABIZ = '<svg class="nabiz" viewBox="0 0 164 24" aria-hidden="true" focusable="false"><path d="M1 12h50l6-9 7 18 7-14 5 5h80"/><circle class="n-halka" cx="158" cy="12" r="3"/><circle class="n-nokta" cx="158" cy="12" r="3"/></svg>';
 
   // 1) Başlıklar: kelime kelime açılış ve nabız çizgisi
-  var basliklar = document.querySelectorAll('.bolum .b-bas, .koyu h2, .randevu h2, .sayfa-bas h1');
+  var basliklar = document.querySelectorAll('.giris h1, .bolum .b-bas, .koyu h2, .randevu h2, .sayfa-bas h1');
   if (!az) document.documentElement.classList.add('efekt-hazir');
   basliklar.forEach(function (h) {
     if (h.getAttribute('data-efekt')) return;
