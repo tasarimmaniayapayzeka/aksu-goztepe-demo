@@ -66,15 +66,25 @@
     });
   });
 
-  // Hekim süzgeci (birime göre)
-  document.querySelectorAll('select[data-hekim-suz]').forEach(function (sel) {
-    var hedef = document.querySelector(sel.getAttribute('data-hekim-suz'));
-    sel.addEventListener('change', function () {
-      var v = sel.value;
-      hedef.querySelectorAll('[data-birim]').forEach(function (o) {
-        o.hidden = !(v === '' || o.getAttribute('data-birim') === v);
-      });
+  // Hekim süzgeci: birim seçimi + ad araması (aynı hedef listeye bağlı)
+  function hekimSuz(hedefSec) {
+    var hedef = document.querySelector(hedefSec);
+    var sel = document.querySelector('select[data-hekim-suz="' + hedefSec + '"]');
+    var ara = document.querySelector('input[data-hekim-ara="' + hedefSec + '"]');
+    var b = sel ? sel.value : '';
+    var q = ara ? ara.value.trim().toLocaleLowerCase('tr') : '';
+    var gorunen = 0;
+    hedef.querySelectorAll('[data-birim]').forEach(function (o) {
+      var uygun = (b === '' || o.getAttribute('data-birim') === b) && (q === '' || (o.getAttribute('data-ad') || '').indexOf(q) > -1);
+      o.hidden = !uygun;
+      if (uygun) gorunen++;
     });
+    var bos = hedef.parentNode.querySelector('[data-bos]');
+    if (bos) bos.hidden = gorunen > 0;
+  }
+  document.querySelectorAll('[data-hekim-suz], [data-hekim-ara]').forEach(function (g) {
+    var h = g.getAttribute('data-hekim-suz') || g.getAttribute('data-hekim-ara');
+    g.addEventListener(g.tagName === 'SELECT' ? 'change' : 'input', function () { hekimSuz(h); });
   });
 
   // Arama kutusu (Yön 1)
@@ -139,7 +149,8 @@
       e.preventDefault();
       var ilk = null;
       f.querySelectorAll('[required]').forEach(function (g) {
-        var hata = g.closest('.alan').querySelector('.hata');
+        var kap = g.closest('.alan') || g.closest('form');
+        var hata = kap.querySelector('.hata');
         var gecerli = g.type === 'checkbox' ? g.checked : g.checkValidity() && g.value.trim() !== '';
         if (hata) hata.hidden = gecerli;
         g.setAttribute('aria-invalid', gecerli ? 'false' : 'true');
