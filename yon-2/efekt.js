@@ -177,6 +177,74 @@
     });
   }
 
+  // "… randevusu için" şeridi: başlıktan numaraya doğru akan ince nabız oku.
+  // Kendiliğinden aralıklı akar; fare şeritteyken sinyaller imlecin olduğu yerden çıkar, numaraya varınca söner.
+  document.querySelectorAll('.cta-serit').forEach(function (serit) {
+    var kutu = serit.querySelector('.cta-sinyal'), tel = serit.querySelector('.cta-tel');
+    if (!kutu) return;
+    var cv = kutu.querySelector('canvas'), ctx = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+    var W = 0, H = 0, sinyaller = [], son = 0, sonUret = -9999, imlec = null, calis = false;
+    var PEMBE = '255, 114, 118';
+    function boyut() { var r = kutu.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function ekg(t) {
+      return 0.12 * Math.exp(-Math.pow((t - 0.2) / 0.06, 2)) - 0.22 * Math.exp(-Math.pow((t - 0.44) / 0.025, 2))
+        + 1 * Math.exp(-Math.pow((t - 0.52) / 0.03, 2)) - 0.38 * Math.exp(-Math.pow((t - 0.6) / 0.03, 2)) + 0.24 * Math.exp(-Math.pow((t - 0.8) / 0.07, 2));
+    }
+    function zemin() {
+      var y = H / 2, uc = W - 2;
+      var g = ctx.createLinearGradient(0, 0, W, 0);
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,.22)');
+      ctx.strokeStyle = g; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(uc - 1, y); ctx.stroke();
+      ctx.strokeStyle = 'rgba(' + PEMBE + ',.85)'; ctx.lineWidth = 1.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(uc - 7, y - 6); ctx.lineTo(uc, y); ctx.lineTo(uc - 7, y + 6); ctx.stroke(); // ok ucu
+    }
+    function ciz(s) {
+      var boy = 64, y = H / 2, yol = W - 10 - s.bas, ilerle = Math.max(0, Math.min(1, (s.x - s.bas) / yol));
+      var alfa = Math.min(1, (s.x - s.bas) / 30 + 0.15) * (1 - Math.pow(ilerle, 3)), gen = (H * 0.38) * (0.75 + 0.25 * Math.sin(ilerle * Math.PI));
+      function iz(dx, dy, a, kal) {
+        ctx.beginPath(); var ilk = true;
+        for (var k = 0; k <= boy; k += 2) {
+          var x = s.x - boy + k; if (x < s.bas) continue;
+          var yy = y - ekg(k / boy) * gen;
+          if (ilk) { ctx.moveTo(x + dx, yy + dy); ilk = false; } else ctx.lineTo(x + dx, yy + dy);
+        }
+        ctx.strokeStyle = 'rgba(' + PEMBE + ',' + a.toFixed(3) + ')'; ctx.lineWidth = kal; ctx.stroke();
+      }
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      iz(4, 4, alfa * 0.16, 1.6);                                   // derinlik yankısı
+      ctx.shadowColor = 'rgba(' + PEMBE + ',.95)'; ctx.shadowBlur = 10;
+      iz(0, 0, alfa, 1.6);                                           // ince parlak iz
+      ctx.shadowBlur = 0;
+      var r = ctx.createRadialGradient(s.x, y, 0, s.x, y, 8);      // öndeki ışık
+      r.addColorStop(0, 'rgba(255,255,255,' + alfa.toFixed(3) + ')'); r.addColorStop(1, 'rgba(' + PEMBE + ',0)');
+      ctx.fillStyle = r; ctx.beginPath(); ctx.arc(s.x, y, 8, 0, Math.PI * 2); ctx.fill();
+    }
+    function kare(t) {
+      if (!calis) return;
+      var dt = son ? Math.min(40, t - son) : 16; son = t;
+      var aralik = imlec === null ? 1500 : 650;
+      if (t - sonUret > aralik) { var b = imlec === null ? 0 : Math.max(0, Math.min(W - 70, imlec)); sinyaller.push({ bas: b, x: b }); sonUret = t; }
+      ctx.clearRect(0, 0, W, H); zemin();
+      sinyaller.forEach(function (s) {
+        s.x += dt * 0.34;
+        if (s.x >= W - 10 && !s.vardi) { s.vardi = true; if (tel) { tel.classList.remove('sinyal-vardi'); void tel.offsetWidth; tel.classList.add('sinyal-vardi'); } }
+        if (!s.vardi) ciz(s);
+      });
+      sinyaller = sinyaller.filter(function (s) { return !s.vardi; });
+      requestAnimationFrame(kare);
+    }
+    boyut();
+    new ResizeObserver(boyut).observe(kutu);
+    if (az) { zemin(); ciz({ bas: 0, x: W * 0.55 }); return; }
+    serit.addEventListener('mousemove', function (e) { imlec = e.clientX - kutu.getBoundingClientRect().left; });
+    serit.addEventListener('mouseleave', function () { imlec = null; });
+    new IntersectionObserver(function (g) {
+      var gor = g[0].isIntersecting;
+      if (gor && !calis) { calis = true; son = 0; requestAnimationFrame(kare); }
+      if (!gor) calis = false;
+    }).observe(kutu);
+  });
+
   // 2) 3B EKG monitörü
   document.querySelectorAll('.monitor canvas').forEach(function (cv) {
     var ctx = cv.getContext('2d');

@@ -1052,3 +1052,12 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
 .iletisim-liste a[href^="https://wa.me"]:hover { border-color: var(--wa); }
 .iletisim-liste a[href^="https://wa.me"]:hover .ik, .yan-tel[href^="https://wa.me"]:hover, .yan-tel[href^="https://wa.me"]:hover .ik { color: var(--wa); }
 .alt-kimlik a[href^="https://wa.me"]:hover { color: var(--wa); }
+
+/* "… randevusu için" şeridi: başlıktan numaraya akan ince nabız oku (efekt.js). Fare şeritteyken sinyal imleçten çıkar */
+.cta-bas { margin: 0; }
+.cta-sinyal { position: relative; flex: 1 1 120px; min-width: 120px; height: 48px; }
+.cta-sinyal canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cta-tel .ik { transition: color .3s ease; }
+.cta-tel.sinyal-vardi .ik { animation: cta-vardi .7s ease-out; }
+@keyframes cta-vardi { 0% { color: #fff; transform: scale(1); } 30% { color: var(--kirmizi-koyuda); transform: scale(1.3); } 100% { color: #fff; transform: scale(1); } }
+@media (max-width: 767px) { .cta-sinyal { display: none; } }
