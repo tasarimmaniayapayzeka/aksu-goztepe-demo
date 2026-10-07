@@ -1199,3 +1199,43 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
   .monitor-etiket span { font-size: 11px; }
   .hk-cip { -webkit-mask: linear-gradient(90deg, #000 78%, transparent); mask: linear-gradient(90deg, #000 78%, transparent); }
 }
+
+/* Tarama düzeltmesi: ana sayfa arama sonuçları kömür panelin altında kırpılıyor, hızlı işlem şeridinin arkasında kalıyordu */
+.giris-sahne:has(.arama-sonuc:not([hidden])) { overflow: visible; z-index: 3; }
+.giris-sahne:has(.arama-sonuc:not([hidden])) > .kap { z-index: 3; }
+
+/* Tarama düzeltmesi: dönen tetkik kartında uzun süre metni sağ alttaki çevir düğmesinin altına giriyordu */
+.icerik .tk-on .tk-sure { margin-right: 48px; }
+
+/* Tarama düzeltmesi: mobilde .kap dolgusu birim sayfası düzeninin alt boşluğunu sıfırlıyordu; gözden geçirme notu koyu şeride yapışıyordu */
+@media (max-width: 767px) { .duzen { padding-bottom: 64px; } }
+
+/* Tarama düzeltmesi: sağlık rehberinde öne çıkan yazının altında yan sütun boyunca yaklaşık 320 px boşluk kalıyordu; fotoğraf kalan yüksekliği doldurur */
+@media (min-width: 961px) {
+  .rk-izgara:not(.rk-uclu) .rk-buyuk .rk-foto { flex: 1 0 auto; min-height: 0; }
+}
+
+/* Tarama düzeltmesi: mobilde süzgeç etiketleri farklı genişlikte olduğu için alttaki iki kutu farklı yerden başlıyordu */
+@media (max-width: 767px) { .hk-suz label { flex: 0 0 84px; } }
+
+/* Tarama düzeltmesi: rehber yazılarında son kaynak bağlantısı gözden geçirme kutusuna yapışıyordu */
+.kaynaklar + .icerik-kunye { margin-top: 24px; }
+
+/* Tarama düzeltmesi: iki satıra inen ara başlıklarda kırmızı çizgi iki satırın ortasında kalıyordu; ilk satırla hizalanır */
+.metin > h2 { align-items: flex-start; }
+.metin > h2::before { margin-top: calc(.6em - 1.5px); }
+
+/* Tarama düzeltmesi: hakkımızda sayı kutularında akan nabız çizgisi alt etiketin ("tıbbi birim", "acil servis") üstünden geçiyordu; ikonun yanındaki boş şeride alındı */
+.olgu li::after { top: 12px; bottom: auto; left: 52px; }
+@media (max-width: 767px) { .olgu li::after { top: 9px; left: 46px; } }
+
+/* Tarama düzeltmesi: check-up "Paketler" başlığının nabız çizgisi paket kartlarına yapışıktı (boşluk 0) */
+.b-bas + .pk-izgara { margin-top: 32px; }
+
+/* Tarama düzeltmesi: metin sayfalarındaki formlarda hata iletisi .metin p kuralıyla 17,5 px ve alt boşluklu çıkıyordu (yardım metninden büyük);
+   seçim kutusu ve uzun metin alanı hatalıyken kırmızı çerçeve almıyordu */
+.metin .hata { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.alan select[aria-invalid="true"], .alan textarea[aria-invalid="true"] { border-color: var(--kirmizi-koyu); }
+
+/* Tarama düzeltmesi: hekim vitrini grup düğmeleri sona kaydırılınca sağ kenar solması kalkar (sınıf efekt.js'den) */
+@media (max-width: 767px) { .hk-cip.cip-son { -webkit-mask: none; mask: none; } }

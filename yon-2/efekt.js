@@ -269,6 +269,11 @@
   });
   document.querySelectorAll('[data-hk-cip]').forEach(function (cip) {
     var serit = document.querySelector(cip.getAttribute('data-hk-cip'));
+    // Tarama düzeltmesi: mobilde sağ kenar solması, sıra sonuna kaydırılınca son düğmeyi (seçili olsa bile) soldurmasın
+    function sonMu() { cip.classList.toggle('cip-son', cip.scrollLeft + cip.clientWidth >= cip.scrollWidth - 2); }
+    cip.addEventListener('scroll', sonMu, { passive: true });
+    window.addEventListener('resize', sonMu);
+    sonMu();
     cip.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-g]'); if (!b || !serit) return;
       var g = b.getAttribute('data-g');
