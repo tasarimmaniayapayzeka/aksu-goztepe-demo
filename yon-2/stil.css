@@ -1044,3 +1044,11 @@ a.hk:hover .ok, a.hky:hover .ok { transform: translateX(3px); }
 }
 @keyframes hy-akis { from { background-position: 0 50%; } to { background-position: -150px 50%; } }
 @media (max-width: 767px) { .hizli-yol a::after { left: 50%; top: 20px; } }
+
+/* WhatsApp bağlantıları: hover'da WhatsApp'ın kendi yeşili (kullanıcı isteği) */
+:root { --wa: #25D366; }
+a.dgm[href^="https://wa.me"]:hover, .hizli-yol a[href^="https://wa.me"]:hover, .mobil-cubuk a[href^="https://wa.me"]:hover { background: var(--wa); border-color: var(--wa); color: #fff; }
+a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:hover .ik { color: #fff; }
+.iletisim-liste a[href^="https://wa.me"]:hover { border-color: var(--wa); }
+.iletisim-liste a[href^="https://wa.me"]:hover .ik, .yan-tel[href^="https://wa.me"]:hover, .yan-tel[href^="https://wa.me"]:hover .ik { color: var(--wa); }
+.alt-kimlik a[href^="https://wa.me"]:hover { color: var(--wa); }
