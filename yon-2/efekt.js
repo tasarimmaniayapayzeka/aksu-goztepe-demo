@@ -245,6 +245,70 @@
     }).observe(kutu);
   });
 
+  // Hekim vitrini: grup düğmeleriyle süzme, ok düğmeleri ve kırmızı ilerleme çizgisi
+  document.querySelectorAll('[data-hk-kontrol]').forEach(function (kontrol) {
+    var serit = document.querySelector(kontrol.getAttribute('data-hk-kontrol'));
+    if (!serit) return;
+    var geri = kontrol.querySelector('[data-yon="-1"]'), ileri = kontrol.querySelector('[data-yon="1"]'), cubuk = kontrol.querySelector('.hk-ilerle i');
+    function guncelle() {
+      var sw = serit.scrollWidth, cw = serit.clientWidth, sl = serit.scrollLeft;
+      cubuk.style.width = Math.min(100, cw / sw * 100) + '%';
+      cubuk.style.transform = 'translateX(' + (sl / cw * 100) + '%)';
+      geri.disabled = sl <= 2; ileri.disabled = sl + cw >= sw - 2;
+    }
+    kontrol.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-yon]'); if (!b) return;
+      var once = serit.scrollLeft, adim = +b.getAttribute('data-yon') * serit.clientWidth * 0.75;
+      serit.scrollBy({ left: adim, behavior: az ? 'auto' : 'smooth' });
+      setTimeout(function () { if (Math.abs(serit.scrollLeft - once) < 2) serit.scrollLeft = once + adim; guncelle(); }, 700); // yumuşak kaydırma çalışmazsa
+    });
+    serit.addEventListener('scroll', guncelle, { passive: true });
+    window.addEventListener('resize', guncelle);
+    serit.guncelle = guncelle;
+    guncelle();
+  });
+  document.querySelectorAll('[data-hk-cip]').forEach(function (cip) {
+    var serit = document.querySelector(cip.getAttribute('data-hk-cip'));
+    cip.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-g]'); if (!b || !serit) return;
+      var g = b.getAttribute('data-g');
+      cip.querySelectorAll('button[data-g]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      serit.querySelectorAll('li[data-grup]').forEach(function (li) { li.hidden = !!g && li.getAttribute('data-grup') !== g; });
+      serit.scrollLeft = 0;
+      if (!az) serit.querySelectorAll('li:not([hidden])').forEach(function (li, i) {
+        li.style.animation = 'none'; void li.offsetWidth; li.style.animation = 'sirala .55s cubic-bezier(.2, .8, .2, 1) ' + (i * 50) + 'ms backwards';
+      });
+      if (serit.guncelle) serit.guncelle();
+    });
+  });
+
+  // 7/24 bölümü: canlı saat, hizmetin üzerine gelince monitör etiketi ve ritim hızı
+  document.querySelectorAll('[data-canli-saat]').forEach(function (el) {
+    function yaz() {
+      try { el.textContent = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' }); }
+      catch (e) { var d = new Date(); el.textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
+      el.hidden = false;
+    }
+    yaz(); setInterval(yaz, 15000);
+  });
+  document.querySelectorAll('.hz-liste').forEach(function (liste) {
+    var bolum = liste.closest('section'), mon = bolum && bolum.querySelector('.monitor');
+    if (!mon) return;
+    var ad = mon.querySelector('[data-mon-ad]'), alt = mon.querySelector('[data-mon-alt]'), etiket = mon.querySelector('.monitor-etiket');
+    var ilkAd = ad.textContent, ilkAlt = alt.textContent;
+    function goster(a, b, hiz) {
+      etiket.classList.remove('degisti'); void etiket.offsetWidth; etiket.classList.add('degisti');
+      ad.textContent = a; alt.textContent = b; mon.setAttribute('data-hiz', hiz);
+    }
+    liste.querySelectorAll('.hz').forEach(function (h) {
+      function ac() { goster(h.getAttribute('data-hz'), 'Şu an açık, 7/24 hizmette', 1.9); mon.classList.add('hz-secili'); }
+      h.addEventListener('mouseenter', ac); h.addEventListener('focus', ac);
+    });
+    function kapa() { goster(ilkAd, ilkAlt, 1); mon.classList.remove('hz-secili'); }
+    liste.addEventListener('mouseleave', kapa);
+    liste.addEventListener('focusout', function (e) { if (!liste.contains(e.relatedTarget)) kapa(); });
+  });
+
   // 2) 3B EKG monitörü
   document.querySelectorAll('.monitor canvas').forEach(function (cv) {
     var ctx = cv.getContext('2d');
@@ -321,7 +385,7 @@
     function kare(t) {
       if (!calis) return;
       var dt = son ? Math.min(48, t - son) : 16; son = t; zaman = t;
-      var hiz = W / 2600 * dt; // ekranı yaklaşık 2,6 sn'de geçer
+      var hiz = W / 2600 * dt * (+(cv.parentNode.getAttribute('data-hiz') || 1)); // ekranı yaklaşık 2,6 sn'de geçer; hizmet seçilince hızlanır
       var atim = W / 2.2;
       for (var s = 0; s < hiz; s++) {
         imlec = (imlec + 1) % W; toplam++;
