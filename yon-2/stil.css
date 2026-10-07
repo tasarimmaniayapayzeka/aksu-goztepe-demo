@@ -1300,3 +1300,16 @@ a.dgm[href^="https://wa.me"]:hover .ik, .mobil-cubuk a[href^="https://wa.me"]:ho
 @media (max-width: 767px) {
   .bt span, .metin .yardim, .metin .hata, .hizli small, .giris-olgu span, .arama-ornek span, .arama-ornek a, .alt-not, .kv dt { font-size: 14px; }
 }
+
+/* Mobil: rehber tabloları yana kaymak yerine satır satır kart (her hücrede sütun başlığı, parca.js data-b) */
+@media (max-width: 600px) {
+  .blk-tablo { overflow: visible; border: 0; }
+  .blk-tablo table { min-width: 0; font-size: 15px; }
+  .blk-tablo thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .blk-tablo tbody, .blk-tablo tr, .blk-tablo th, .blk-tablo td { display: block; }
+  .blk-tablo tr { margin-bottom: 10px; border: 1px solid var(--cizgi); border-radius: var(--r); overflow: hidden; }
+  .blk-tablo tbody th { background: var(--komur); color: #fff; padding: 12px 14px; border-bottom: 0; }
+  .blk-tablo td { display: grid; grid-template-columns: minmax(96px, 38%) minmax(0, 1fr); gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--cizgi); }
+  .blk-tablo td::before { content: attr(data-b); font-size: 14px; font-weight: 700; color: var(--metin-2); }
+  .blk-tablo tr td:last-child { border-bottom: 0; }
+}
